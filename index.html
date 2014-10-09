@@ -1,13 +1,125 @@
 <!DOCTYPE>
 <html>
 	<head>
-		<link rel="stylesheet" href="includes/css/index.css" />
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="includes/css/index.css" /> 
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
+		<script src="https://code.angularjs.org/1.2.0/angular-resource.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.8/angular-ui-router.min.js"></script>
 		<script type="text/javascript" src="includes/js/index.js"></script>
 	</head>
-	<body> 
-		
+	<body ng-app="studies"> 
+		<div class="container">
+		<div class="row top-buffer">
+			<div class="col-md-4 col-md-offset-4">
+
+			<form role="form" ng-controller="login_controller">
+				{{ user_credentials.user }}
+				<br/> {{ user_credentials.pass }}
+				<h4 class="text-danger text-center" ng-show="!user_credentials.token && !user.$pristine && !pass.$pristine">
+					Invalid credentials. Please try again!
+				</h4>
+
+				<h4 class="text-primary text-center" ng-show="!user_credentials.user && !user_credentials.pass ">
+					Please login to continue
+				</h4>
+
+				<div class="form-group">
+					<label for="user">User</label>
+					<input type="text" class="form-control" name="user" placeholder="User" ng-model="user_credentials.user" ng-minlength="5" ng-maxlength="12">
+				</div>
+				<div class="form-group">
+					<label for="pass">Password</label>
+					<input type="password" class="form-control" name="pass" placeholder="Password" ng-model="user_credentials.pass">
+				</div>
+
+				<button class="btn btn-default" ng-click="login()">Login</button>
+			</form>
+
+			</div>
+		</div>
+	<!--
+		this is how the table looks
 	
+			<div class="row">
+				<div class="col-md-8 col-md-offset-2">
+					<table class="table table-striped  text-center">
+						<thead>
+							<th class="text-center"> ID </th>
+			    			<th class="text-center"> Title </th>
+			    			<th class="text-center"> Author </th>
+			    			<th class="text-center"> Total Activities </th>
+			    			<th class="text-center"> Actions </th>
+						</thead>
+						<tbody>
+							<tr>
+								<td> Dummy Recording</td>
+								<td> Dummy Recording</td>
+								<td> asdasfasRecording</td>
+								<td> DummyRecordingRecording</td>
+								<td> Dummy Recording</td>
+							</tr>
+							<tr>
+								<td> DummyRecording Recording</td>
+								<td> Dummy Recording</td>
+								<td> DummRecordingy Recording</td>
+								<td> DummymmRecordin Recording</td>
+								<td> Dummy  Recording</td>
+							</tr>
+							<tr>
+								<td> Dummy Recording</td>
+								<td> Dummy Recording</td>
+								<td> Dummy Recording</td>
+								<td> Dummy Recording</td>
+								<td> Dummy Recording</td>
+							</tr>
+							<tr>
+								<td> Dummy Recording</td>
+								<td> Dummy Recording</td>
+								<td> Dummy Recording</td>
+								<td> Dummy Recording</td>
+								<td> Dummy Recording</td>
+							</tr>
+							<tr>
+								<td> Dummy Recording</td>
+								<td> Dummy Recording</td>
+								<td> Dummy Recording</td>
+								<td> Dummy Recording</td>
+								<td> Dummy Recording</td>
+							</tr>
+							<tr>
+								<td> Dummy Recording</td>
+								<td> Dummy Recording</td>
+								<td> Dummy Recording</td>
+								<td> Dummy Recording</td>
+								<td> Dummy Recording</td>
+							</tr>
+							<tr>
+								<td> Dummy Recording</td>
+								<td> Dummy Recording</td>
+								<td> Dummy Recording</td>
+								<td> Dummy Recording</td>
+								<td> Dummy Recording</td>
+							</tr>
+
+						</tbody>
+					</table>
+
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-2 col-md-offset-5">
+				<ul class="pagination">
+				  <li><a href="#">&laquo;</a></li>
+				  <li><a href="#">1</a></li>
+				  <li><a href="#">2</a></li>
+				  <li><a href="#">3</a></li>
+				  <li><a href="#">4</a></li>
+				  <li><a href="#">5</a></li>
+				  <li><a href="#">&raquo;</a></li>
+				</ul>
+			</div>
+		-->
 	</body>
 </html>
