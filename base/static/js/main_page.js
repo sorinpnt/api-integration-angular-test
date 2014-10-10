@@ -10,11 +10,11 @@ app.factory("userCredentials",[ function() {
 }]);
 
 app.factory("studyResource", [ "$resource", function( $resource ) {
-	return $resource( 'http://dev1core-1.h4cloud.com/v1/users/login.json');
+	return $resource( 'http://localhost:8000/index/api/v1.0/courses/?format=json');
 }]);
 
 app.controller("loginController",["$scope", "userCredentials", "studyResource" , function( $scope, userCredentials, $studyResource) {
 	$scope.login = function(){
-		userCredentials.loginAttemptFailed = true;
+		console.log($studyResource.get());
 	}
 }]);

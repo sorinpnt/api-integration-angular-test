@@ -1,19 +1,18 @@
-<!DOCTYPE>
-<html>
-	<head>
-		<meta charset="UTF-8"/>
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
-		<link rel="stylesheet" href="includes/css/index.css" /> 
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
-		<script src="https://code.angularjs.org/1.2.0/angular-resource.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.8/angular-ui-router.min.js"></script>
-		<script type="text/javascript" src="includes/js/index.js"></script>
-	</head>
-	<body ng-app="studies"> 
+{% extends 'base.html' %}
+
+{% block files %}
+	{% load staticfiles %}
+	<script src="{% static "js/main_page.js" %}" type="text/javascript"></script>
+	<link rel="stylesheet" type="text/css" href="{% static "css/main_page.css" %}"/>
+{% endblock files %}	
+
+{% block ng_app %}studies{% endblock %}
+
+{% block page_content %}
+{% verbatim %}
 		<div class="container">
 		<div class="row top-buffer">
 			<div class="col-md-4 col-md-offset-4">
-
 			<form role="form" ng-controller="loginController" name="loginForm">
 				{{ userCredentials.user }}
 				<br/> {{ userCredentials.pass }}
@@ -84,16 +83,15 @@
 						   ng-maxlength="9"
 						   required>
 				</div>
-
 				<button class="btn btn-default" ng-click="login()">Login</button>
 			</form>
 
 			</div>
 		</div>
-	<!--
-		this is how the table looks
+		
 	
 			<div class="row">
+
 				<div class="col-md-8 col-md-offset-2">
 					<table class="table table-striped  text-center">
 						<thead>
@@ -109,8 +107,16 @@
 								<td> Dummy Recording</td>
 								<td> asdasfasRecording</td>
 								<td> DummyRecordingRecording</td>
-								<td> Dummy Recording</td>
+								<td>
+
+								</td>
 							</tr>
+						</tbody>
+					</table>
+				</div>
+							<!--
+		this is how the table looks
+	
 							<tr>	
 								<td> DummyRecording Recording</td>
 								<td> Dummy Recording</td>
@@ -173,5 +179,5 @@
 				</ul>
 			</div>
 		-->
-	</body>
-</html>
+{% endverbatim %}
+{% endblock page_content %}	
