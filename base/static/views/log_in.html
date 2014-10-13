@@ -1,0 +1,73 @@
+<div class="col-md-4 col-md-offset-4">
+	<form role="form" ng-controller="loginController" name="loginForm">
+	{{ userCredentials.user}} <br/>
+	{{ userCredentials.pass}}
+		<!-- info messagess -->
+		<h4 class="text-primary text-center" 
+		    ng-show="loginForm.user.$dirty && loginForm.user.$error.required">
+			The username field is mandatory. Why did you changed your mind ? 
+		</h4>
+
+		<h4 class="text-primary text-center" 
+		    ng-show="loginForm.pass.$dirty && loginForm.pass.$error.required">
+			The password field is mandatory. Why did you changed your mind ? 
+		</h4>
+
+		<h4 class="text-primary text-center" 
+		    ng-show="loginForm.$pristine">
+			Please login to continue
+		</h4>
+
+		<!-- error messagess -->
+		<h4 class="text-danger text-center" 
+		    ng-show="!loginForm.$pristine  && userCredentials.loginAttemptFailed">
+			Invalid credentials. Please try again!
+		</h4>
+
+		<h4 class="text-danger text-center" 
+		    ng-show="loginForm.user.$error.minlength">
+			Username is too short
+		</h4>
+
+		<h4 class="text-danger text-center" 
+		    ng-show="loginForm.user.$error.maxlength">
+			Username is too long
+		</h4>
+
+		<h4 class="text-danger text-center" 
+		    ng-show="loginForm.pass.$error.minlength">
+			Password is too short
+		</h4>
+
+		<h4 class="text-danger text-center" 
+		    ng-show="loginForm.pass.$error.maxlength">
+			Password is too long
+		</h4>
+
+		<div class="form-group">
+
+			<label for="user">User</label>
+			<input type="text" 
+				   name="user" 
+				   class="form-control" 
+				   placeholder="User" 
+				   ng-model="userCredentials.user" 
+				   ng-minlength="7" 
+				   ng-maxlength="7"
+				   required>
+		</div>
+
+		<div class="form-group">
+			<label for="pass">Password</label>
+			<input type="password" 
+				   name="pass"
+				   class="form-control" 
+				   placeholder="Password" 
+				   ng-model="userCredentials.pass"
+				   ng-minlength="9" 
+				   ng-maxlength="9"
+				   required>
+		</div>
+		<button class="btn btn-default" ng-click="login()">Login</button>
+	</form>
+</div>

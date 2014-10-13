@@ -1,0 +1,37 @@
+<div class="col-md-8 col-md-offset-2">
+	<table class="table table-striped  text-center" ng-controller="coursesController">
+		<thead>
+			<th class="text-center"> ID </th>
+			<th class="text-center"> Title </th>
+			<th class="text-center"> Author Name ( Author ID )</th>
+			<th class="text-center"> Total Activities </th>
+			<th class="text-center"> Actions </th>
+		</thead>
+		<tbody>
+			<tr ng-repeat="course in courses">
+				<td> 
+					{{ course.id }}
+				</td>
+				<td> 
+					{{ course.title }}
+				</td>
+				<td> 
+					{{ course.authorName }} ( {{ course.authorId }} ) 
+				</td>
+				<td> 
+					{{ course.total_activities }}
+				</td>
+				<td>
+					<div class="row" >
+						<div class="col-md-2 col-md-offset-2">
+							<a class="edit" ng-click="edit(course.id)"></a>
+						</div>
+						<div class="col-md-2 col-md-offset-2">
+							<a class="col-md-2 col-md-offset-2 delete" ng-click="delete(course.id)"></a>
+						</div>
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>		

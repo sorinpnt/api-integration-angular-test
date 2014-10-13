@@ -1,3 +1,25 @@
 .top-buffer { 
 	margin-top:50px; 
 }
+.edit {
+	display:block;
+	width:25px;
+	height:27px;
+	background:url(../img/edit.png); 
+}
+.edit:hover { background:url(../img/edit-hover.png); } 
+
+.delete {
+	width:34px;
+	height:27px;
+	display:block;
+	background:url(../img/delete.png); 
+}
+.delete:hover { background:url(../img/delete-hover.png); } 
+
+tbody > tr {
+	width : 100%;
+}
+tbody > tr > td {
+	width : 20%;
+}
