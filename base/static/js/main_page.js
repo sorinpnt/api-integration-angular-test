@@ -1,5 +1,6 @@
 var app = angular.module("studies",[ 'ui.router' , 'ngResource']);
 
+/* ui-router routes config */
 app.config(function($stateProvider, $urlRouterProvider) {
 
     $urlRouterProvider.otherwise('login/');
@@ -21,6 +22,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
         });
 });
 
+/* factory services declaration */
 app.factory("userCredentials",[ function() {
 	return {
 		user : '',
@@ -29,6 +31,27 @@ app.factory("userCredentials",[ function() {
 		loginAttemptFailed : false,
 	}
 }]);
+
+app.service("loginResource" , function(){
+	this.user = '';
+	this.pass = '';
+	this.validCredentials = false;
+	this.checkCredentials = function () {
+		securityToken = '';
+		if ( ( this.user.localeCompare('Manager') == 0 ) && ( this.pass.localeCompare('headware4') == 0 ) ) {
+			securityToken = 'verb43dSDGreagtykhmpo4354g42qvfREGeqrg34ew78';
+			this.validCredentials = true;
+		}
+		return securityToken;
+	}
+	this.setCredentials = function( user, pass ) {
+		this.user = user;
+		this.pass = pass;
+	}
+	this.loggedIn = function () {
+		return this.validCredentials;
+	}
+});
 
 app.factory("studyResource", [ "$resource", function( $resource ) {
 	return $resource( 'http://localhost:8000/index/api/v1.0/courses/?format=json',{},{
@@ -41,26 +64,26 @@ app.factory("studyResource", [ "$resource", function( $resource ) {
 	});
 }]);
 
-app.controller("loginController",["$scope", "userCredentials", "studyResource" ,"$state", function( $scope, userCredentials, $studyResource, $state ) {
-
+/* controllers declaration */
+app.controller("loginController",["$scope", "loginResource", "userCredentials", "$state", function( $scope, loginResource, userCredentials, $state ) {
+	$scope.userCredentials = userCredentials;
 	$scope.login = function() {
-		console.log(userCredentials.user);
-		if (( userCredentials.user === "Manager") && (userCredentials.pass === "headware4")) {
-			userCredentials.securityToken = 'ewfw#@sfs32saSdaASfewc32saSAf332greg';
-			userCredentials.loginAttemptFailed = false;
+		loginResource.setCredentials($scope.userCredentials.user, $scope.userCredentials.pass);
+		token = loginResource.checkCredentials();
+		if ( token.localeCompare('') != 0 ) {
+			$scope.userCredentials.loginAttemptFailed = false;
 			$state.go('display-list');
-			console.log("GATU MATII");
 		} else {
-			userCredentials.loginAttemptFailed = true;console.log("CRISTOSI");
+			$scope.userCredentials.loginAttemptFailed = true;
 		}
 	}
-
 }]);
 
-app.controller("coursesController",["$scope", "userCredentials", "studyResource" ,"$state", function( $scope, userCredentials, $studyResource, $state) {
-	if (userCredentials.securityToken === '') {
+app.controller("coursesController",["$scope", "loginResource", "studyResource" ,"userCredentials", "$state", function( $scope, loginResource, $studyResource,userCredentials, $state) {
+	if ( !loginResource.loggedIn() ) {
 		$state.go('login');
 	}
+
 	$studyResource.getElements(function(data){
 		$scope.courses = data.objects;
 	});
