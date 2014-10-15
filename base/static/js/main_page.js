@@ -1,5 +1,5 @@
 'use strict';
-var app = angular.module("studies",[ 'ui.router' , 'ngResource']);
+var app = angular.module("studies",[ 'ui.router' , 'ngResource', 'ui.bootstrap']);
 
 /* ui-router routes config */
 app.config(function($stateProvider, $urlRouterProvider) {
@@ -77,6 +77,26 @@ app.service("loginResource" , function(){
 	}
 });
 
+app.service("modalService" , [ "$modal", function($modal){
+	this.modalInstance = null;
+	this.courseId = 0;
+	this.setCourseId = function(id) {
+		this.courseId = id;
+	}
+	this.getCourseId = function() {
+		return this.courseId;
+	}
+	this.openNewInstance = function() {
+		this.modalInstance = $modal.open({
+		    templateUrl: '../static/views/modal.html',
+		    controller: 'modalActionsController',
+		});
+	}
+	this.getInstance = function() {
+		return this.modalInstance;
+	}
+}]);
+
 app.factory("studyResource", [ "$resource", function( $resource ) {
 	return $resource( 'http://localhost:8000/index/api/v1.0/courses/?format=json',{ },
 		{
@@ -103,10 +123,18 @@ app.factory("studyResource", [ "$resource", function( $resource ) {
 				},
 				method : 'put'
 			},
+			removeCourse : {
+				url : 'http://localhost:8000/index/api/v1.0/courses/:id/?format=json',
+				params : {
+					id : '@id'
+				},
+				method : 'delete'
+			},
 		}
 	);
 }]);
 /* controllers declaration */
+
 app.controller("loginController",["$scope", "loginResource", "userCredentials", "$state", function( $scope, loginResource, userCredentials, $state ) {
 	$scope.userCredentials = userCredentials;
 	$scope.login = function() {
@@ -120,24 +148,44 @@ app.controller("loginController",["$scope", "loginResource", "userCredentials", 
 	}
 }]);
 
-app.controller("coursesController",["$scope", "loginResource", "course", "studyResource" , "$state", function( $scope, loginResource, course, $studyResource, $state) {
+app.controller("modalActionsController",["$scope", "modalService", "studyResource", "$state" , "$stateParams",
+				                 function($scope, modalService, studyResource, $state, $stateParams ) {
+    $scope.ok = function () {
+    	studyResource.removeCourse( { id : modalService.getCourseId() });
+        modalService.getInstance().close();
+		
+		$state.transitionTo($state.current, $stateParams, {
+		    reload: true,
+		    inherit: false,
+		    notify: true
+		});
+    };
+     $scope.cancel = function () {
+        modalService.getInstance().close();
+    };
+}]);
+
+app.controller("coursesController",["$scope", "loginResource", "course", "studyResource" , "$state", "modalService",
+						  function ( $scope, loginResource, course, $studyResource, $state, modalService) {
 	if ( !loginResource.loggedIn() ) {
 		$state.go('login');
 	}
-
+	$scope.modalService = modalService;
 	course.isEditable = false;
-
 	$studyResource.getElements(function(data){
 		$scope.courses = data.objects;
 	});
-		
+	
 	$scope.edit = function(id) {
 		course.isEditable = true;
 		$state.go('edit-course', {id: id});
 	}
+	
 	$scope.delete = function(id) {
-		console.log(id);
+		$scope.modalService.courseId = id;
+		$scope.modalService.openNewInstance();
 	}
+	
 }]);
 
 app.controller("editCourseController",[ "$scope", "course" ,"loginResource", "studyResource" , "$state",  "$stateParams", "$filter", 

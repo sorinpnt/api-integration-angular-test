@@ -11,7 +11,7 @@ class CoursesResource(ModelResource):
         authorization = Authorization()
         queryset = Course.objects.all()
         limit = 0
-        allowed_methods = ['get','post','put']
+        allowed_methods = ['get','post','put','delete']
         filtering = {
 	      'id': ALL_WITH_RELATIONS,
 	    }
