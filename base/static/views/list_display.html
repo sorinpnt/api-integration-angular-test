@@ -13,7 +13,9 @@
 					{{ course.id }}
 				</td>
 				<td> 
-					{{ course.title }}
+					<a ui-sref="edit-course({ id: course.id  })">
+						{{ course.title }}
+					</a>
 				</td>
 				<td> 
 					{{ course.authorName }} ( {{ course.authorId }} ) 

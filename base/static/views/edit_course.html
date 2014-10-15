@@ -1,0 +1,167 @@
+<div class="col-md-4 col-md-offset-4">
+	<form role="form" ng-controller="editCourseController" name="editCourseForm">
+	
+		<h4 class="text-danger text-center" 
+		    ng-show="editCourseForm.title.$dirty && editCourseForm.title.$error.minlength">
+			The title is too short!
+		</h4>
+
+		<h4 class="text-danger text-center" 
+		    ng-show="editCourseForm.title.$dirty && editCourseForm.title.$error.maxlength">
+			The title is too long!
+		</h4>
+
+		<h4 class="text-danger text-center" 
+		    ng-show="( editCourseForm.displayOrder.$dirty || editCourseForm.liveActivities.$dirty ||
+		               editCourseForm.status.$dirty || editCourseForm.totalActivities.$dirty ||
+		               editCourseForm.title.$error.$dirty )
+		          && ( editCourseForm.displayOrder.$error.required || editCourseForm.liveActivities.$error.required ||
+		               editCourseForm.status.$error.required || editCourseForm.totalActivities.$error.required ||
+		               editCourseForm.title.$error.required )">
+			All the fieds are mandatory!
+		</h4>
+		<h4 class="text-danger text-center" 
+		    ng-show="( editCourseForm.displayOrder.$dirty || editCourseForm.liveActivities.$dirty || 
+		    		   editCourseForm.status.$dirty || editCourseForm.totalActivities.$dirty )
+		    	  && ( editCourseForm.displayOrder.$error.min || editCourseForm.liveActivities.$error.min || 
+		    		   editCourseForm.status.$error.min || editCourseForm.totalActivities.$error.min )">
+			No negative values allowed !
+		</h4>
+
+		<h4 class="text-danger text-center" 
+		     ng-show="( editCourseForm.displayOrder.$dirty || editCourseForm.liveActivities.$dirty || 
+		    		   editCourseForm.status.$dirty || editCourseForm.totalActivities.$dirty )
+		    	  && ( editCourseForm.displayOrder.$error.max || editCourseForm.liveActivities.$error.max || 
+		    		   editCourseForm.status.$error.max || editCourseForm.totalActivities.$error.max )">
+			This value is beyond the maximum allowed !
+		</h4>
+		
+
+		<div class="form-group">
+			<div class="input-group">
+				<span class="input-group-addon"> Id </span>
+			    <input type="text" class="form-control" name="courseId"
+			    	ng-disabled="true"
+			    	ng-model="course.id"
+			    >
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="input-group">
+				<span class="input-group-addon"> Created </span>
+			    <input type="text" class="form-control" name="created"
+			    	ng-disabled="true"
+			    	ng-model="course.created"
+			    >
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="input-group">
+				<span class="input-group-addon"> Author Id </span>
+			    <input type="text" class="form-control" name="authorId"
+			    	ng-disabled="true"
+			    	ng-model="course.authorId"
+			    >
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="input-group">
+				<span class="input-group-addon"> Author Name </span>
+			    <input type="text" class="form-control" name="authorName"
+			    	ng-disabled="true"
+			    	ng-model="course.authorName"
+			    >
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="input-group">
+				<span class="input-group-addon"> Title </span>
+			    <input type="text" class="form-control" name="title"
+			    	ng-model="course.title"
+			    	ng-disabled="isEditable"
+			    	ng-minlength="5"
+				    ng-maxlength="15"
+			    	required>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="input-group">
+				<span class="input-group-addon"> Modified </span>
+			    <input type="text" class="form-control" name="modified"
+			    	ng-model="course.modified"
+			    	ng-disabled="true"
+			    >
+			</div>
+		</div>
+
+    	<div class="form-group">
+			<div class="input-group">
+				<span class="input-group-addon"> Display Order </span>
+			    <input type="number" class="form-control" name="displayOrder"
+			    	ng-model="course.displayOrder"
+			    	ng-disabled="isEditable"
+			    	min="0"
+			    	max="9999"
+			    	required>
+			</div>
+		</div>
+
+
+		<div class="form-group">
+			<div class="input-group">
+				<span class="input-group-addon"> Live Activities </span>
+			    <input type="number" class="form-control" name="liveActivities"
+			    	ng-model="course.liveActivities"
+			    	ng-disabled="isEditable"
+			    	min="0"
+			    	max="999"
+			    	required>
+			</div>
+		</div>
+
+
+		<div class="form-group">
+			<div class="input-group">
+				<span class="input-group-addon"> Live Status</span>
+			    <input type="checkbox" class="form-control" name="liveStatus"
+			    	ng-model="course.liveStatus"
+			    	ng-checked="course.liveStatus"
+			    	ng-true-value="1"
+       				ng-false-value="0"
+			    	ng-disabled="isEditable">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="input-group">
+				<span class="input-group-addon"> Status </span>
+			    <input type="number" class="form-control" name="status"
+			    	ng-model="course.status"
+			    	ng-disabled="isEditable"
+			    	min="0"
+			    	max="100"
+			    	required>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="input-group">
+				<span class="input-group-addon"> Total Activities </span>
+			    <input type="number" class="form-control" name="totalActivities"
+			    	ng-model="course.total_activities"
+			    	ng-disabled="isEditable"
+			    	min="0"
+			    	max="100"
+			    	required>
+			</div>
+		</div>
+
+		<button class="btn btn-primary" ng-click="saveEdit()" ng-disabled="isEditable">Save Changes</button>
+		<button class="btn btn-danger" ng-click="cancelEdit()">Cancel</button>
+	</form>
+</div>
