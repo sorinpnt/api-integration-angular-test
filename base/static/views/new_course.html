@@ -1,38 +1,38 @@
 <div class="col-md-4 col-md-offset-4">
-	<form role="form" ng-controller="editCourseController" name="editCourseForm">
+	<form role="form" ng-controller="newCourseController" name="newCourseForm">
 	
 		<h4 class="text-danger text-center" 
-		    ng-show="editCourseForm.title.$dirty && editCourseForm.title.$error.minlength">
+		    ng-show="newCourseForm.title.$dirty && newCourseForm.title.$error.minlength">
 			The title is too short!
 		</h4>
 
 		<h4 class="text-danger text-center" 
-		    ng-show="editCourseForm.title.$dirty && editCourseForm.title.$error.maxlength">
+		    ng-show="newCourseForm.title.$dirty && newCourseForm.title.$error.maxlength">
 			The title is too long!
 		</h4>
 
 		<h4 class="text-danger text-center" 
-		    ng-show="( editCourseForm.displayOrder.$dirty || editCourseForm.liveActivities.$dirty ||
-		               editCourseForm.status.$dirty || editCourseForm.totalActivities.$dirty ||
-		               editCourseForm.title.$error.$dirty )
-		          && ( editCourseForm.displayOrder.$error.required || editCourseForm.liveActivities.$error.required ||
-		               editCourseForm.status.$error.required || editCourseForm.totalActivities.$error.required ||
-		               editCourseForm.title.$error.required )">
+		    ng-show="( newCourseForm.displayOrder.$dirty || newCourseForm.liveActivities.$dirty ||
+		               newCourseForm.status.$dirty || newCourseForm.totalActivities.$dirty ||
+		               newCourseForm.title.$error.$dirty )
+		          && ( newCourseForm.displayOrder.$error.required || newCourseForm.liveActivities.$error.required ||
+		               newCourseForm.status.$error.required || newCourseForm.totalActivities.$error.required ||
+		               newCourseForm.title.$error.required )">
 			All the fieds are mandatory!
 		</h4>
 		<h4 class="text-danger text-center" 
-		    ng-show="( editCourseForm.displayOrder.$dirty || editCourseForm.liveActivities.$dirty || 
-		    		   editCourseForm.status.$dirty || editCourseForm.totalActivities.$dirty )
-		    	  && ( editCourseForm.displayOrder.$error.min || editCourseForm.liveActivities.$error.min || 
-		    		   editCourseForm.status.$error.min || editCourseForm.totalActivities.$error.min )">
+		    ng-show="( newCourseForm.displayOrder.$dirty || newCourseForm.liveActivities.$dirty || 
+		    		   newCourseForm.status.$dirty || newCourseForm.totalActivities.$dirty )
+		    	  && ( newCourseForm.displayOrder.$error.min || newCourseForm.liveActivities.$error.min || 
+		    		   newCourseForm.status.$error.min || newCourseForm.totalActivities.$error.min )">
 			No negative values allowed !
 		</h4>
 
 		<h4 class="text-danger text-center" 
-		     ng-show="( editCourseForm.displayOrder.$dirty || editCourseForm.liveActivities.$dirty || 
-		    		   editCourseForm.status.$dirty || editCourseForm.totalActivities.$dirty )
-		    	  && ( editCourseForm.displayOrder.$error.max || editCourseForm.liveActivities.$error.max || 
-		    		   editCourseForm.status.$error.max || editCourseForm.totalActivities.$error.max )">
+		     ng-show="( newCourseForm.displayOrder.$dirty || newCourseForm.liveActivities.$dirty || 
+		    		   newCourseForm.status.$dirty || newCourseForm.totalActivities.$dirty )
+		    	  && ( newCourseForm.displayOrder.$error.max || newCourseForm.liveActivities.$error.max || 
+		    		   newCourseForm.status.$error.max || newCourseForm.totalActivities.$error.max )">
 			This value is beyond the maximum allowed !
 		</h4>
 
@@ -41,8 +41,7 @@
 				<span class="input-group-addon"> Created </span>
 			    <input type="text" class="form-control" name="created"
 			    	ng-disabled="true"
-			    	ng-model="course.created"
-			    >
+			    	ng-model="course.created">
 			</div>
 		</div>
 
@@ -50,7 +49,7 @@
 			<div class="input-group">
 				<span class="input-group-addon"> Author Id </span>
 			    <input type="text" class="form-control" name="authorId"
-			    	ng-disabled="true"
+			    	ng-disabled="course.isNew"
 			    	ng-model="course.authorId"
 			    >
 			</div>
@@ -60,7 +59,7 @@
 			<div class="input-group">
 				<span class="input-group-addon"> Author Name </span>
 			    <input type="text" class="form-control" name="authorName"
-			    	ng-disabled="true"
+			    	ng-disabled="course.isNew"
 			    	ng-model="course.authorName"
 			    >
 			</div>
@@ -71,7 +70,7 @@
 				<span class="input-group-addon"> Title </span>
 			    <input type="text" class="form-control" name="title"
 			    	ng-model="course.title"
-			    	ng-disabled="isEditable"
+			    	ng-disabled="isEditable || course.isNew"
 			    	ng-minlength="5"
 				    ng-maxlength="15"
 			    	required>
@@ -150,7 +149,7 @@
 			</div>
 		</div>
 
-		<button class="btn btn-primary" ng-click="saveEdit()" ng-disabled="isEditable">Save Changes</button>
-		<button class="btn btn-danger" ng-click="cancelEdit()">Cancel</button>
+		<button class="btn btn-primary" ng-click="addNewCourse()" ng-disabled="isEditable">Add Course</button>
+		<button class="btn btn-danger" ng-click="cancelNewCourse()">Cancel</button>
 	</form>
 </div>
