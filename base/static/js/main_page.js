@@ -184,6 +184,10 @@
       	if not loginResource.loggedIn()
       		$state.go 'login'
        */
+      $scope.sorting = {
+        attributeName: "title",
+        descending: false
+      };
       $scope.itemsPerPage = 10;
       $scope.modalService = modalService;
       course.isEditable = false;
@@ -195,6 +199,15 @@
       $scope.$on('pageChanged', function(event, resultSet) {
         $scope.courses = resultSet;
       });
+      $scope.sort = function(attrName) {
+        $scope.sorting.attributeName = attrName;
+        if ($scope.sorting.descending) {
+          $scope.sorting.descending = false;
+        } else {
+          $scope.sorting.descending = true;
+        }
+        $scope.courses = $filter("orderByAttribute")($scope.courses, $scope.sorting.attributeName, $scope.sorting.descending);
+      };
       $scope.setItemsPerPage = function() {
         $scope.$broadcast('setRecordsPerPage', $scope.itemsPerPage);
       };
@@ -319,22 +332,46 @@
     }
   ]);
 
-  app.filter("getCourses", [
+  app.service("objectCompareHelper", [
     function() {
-      return function(courses, page, itemsPerPage) {
-        var filtered, i, lowerLimit, upperLimit;
-        filtered = [];
-        lowerLimit = page * itemsPerPage;
-        upperLimit = (page + 1) * itemsPerPage;
-        if (upperLimit > courses.length) {
-          upperLimit = courses.length;
+      this.compare = function(objectOne, objectTwo, attribute) {
+        if (typeof objectOne[attribute] === 'string') {
+          if (objectOne[attribute].localeCompare(objectTwo[attribute]) === -1) {
+            return false;
+          } else {
+            return true;
+          }
         }
-        i = lowerLimit;
-        while (i < upperLimit) {
-          filtered.push(courses[i]);
+        if (typeof objectOne[attribute] === 'number') {
+          return objectOne[attribute] > objectTwo[attribute];
+        }
+      };
+    }
+  ]);
+
+  app.filter("orderByAttribute", [
+    "objectCompareHelper", function(objectCompareHelper) {
+      return function(courses, attribute, reverse) {
+        var i, j, len, value;
+        len = courses.length;
+        value = void 0;
+        i = void 0;
+        j = void 0;
+        i = 0;
+        while (i < len) {
+          value = courses[i];
+          j = i - 1;
+          while (j > -1 && objectCompareHelper.compare(courses[j], value, attribute)) {
+            courses[j + 1] = courses[j];
+            j--;
+          }
+          courses[j + 1] = value;
           i++;
         }
-        return filtered;
+        if (reverse) {
+          courses.reverse();
+        }
+        return courses;
       };
     }
   ]);

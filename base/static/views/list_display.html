@@ -22,9 +22,12 @@
 			<table class="table table-striped  text-center">
 				<thead>
 					<th class="text-center"> ID </th>
-					<th class="text-center"> Title </th>
-					<th class="text-center"> Author Name ( Author ID )</th>
-					<th class="text-center"> Total Activities </th>
+					<th class="text-center"  ng-click="sort('title')"> Title  <span ng-class="{true: 'glyphicon glyphicon-sort-by-alphabet-alt', false: 'glyphicon glyphicon-sort-by-alphabet'}[sorting.descending]"></span>     
+					</th>
+					<th class="text-center" ng-click="sort('authorName')"> Author Name  <span ng-class="{true: 'glyphicon glyphicon-sort-by-alphabet-alt', false: 'glyphicon glyphicon-sort-by-alphabet'}[sorting.descending]"></span> </th>
+					<th class="text-center"  ng-click="sort('total_activities')"> Total Activities 
+					<span ng-class="{true: 'glyphicon glyphicon-sort-by-order-alt', false: 'glyphicon glyphicon-sort-by-order'}[sorting.descending]"></span>
+					</th>
 					<th class="text-center"> Actions </th>
 				</thead>
 				<tbody>
@@ -38,7 +41,7 @@
 							</a>
 						</td>
 						<td> 
-							{{ course.authorName }} ( {{ course.authorId }} ) 
+							{{ course.authorName }}
 						</td>
 						<td> 
 							{{ course.total_activities }}
