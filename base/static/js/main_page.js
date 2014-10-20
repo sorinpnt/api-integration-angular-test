@@ -185,19 +185,22 @@
       		$state.go 'login'
        */
       $scope.itemsPerPage = 10;
-      $scope.totalPages = [];
-      $scope.page = 0;
-      $scope.last = 0;
       $scope.modalService = modalService;
       course.isEditable = false;
-      $scope.reloadItems = function() {
-        $studyResource.getElements(function(data) {
-          $scope.totalItems = data.objects.length;
-          $scope.totalPages = new Array(Math.ceil($scope.totalItems / $scope.itemsPerPage));
-          $scope.courses = $filter('getCourses')(data.objects, $scope.page, $scope.itemsPerPage);
-          $scope.page = 0;
-          $scope.last = $scope.totalPages.length;
-        });
+      $scope.currentPage = 0;
+      $scope.$on('pagesCount', function(event, pagesArray) {
+        $scope.pagesArray = pagesArray;
+        $scope.totalPages = pagesArray.length;
+      });
+      $scope.$on('pageChanged', function(event, resultSet) {
+        $scope.courses = resultSet;
+      });
+      $scope.setItemsPerPage = function() {
+        $scope.$broadcast('setRecordsPerPage', $scope.itemsPerPage);
+      };
+      $scope.goToPage = function(page) {
+        $scope.$broadcast('getRecords', page);
+        $scope.currentPage = page;
       };
       $scope.limitItems = function() {
         $scope.reloadItems();
@@ -219,11 +222,6 @@
         course.isEditable = true;
         $state.go('new-course');
       };
-      $scope.goToPage = function(page) {
-        $scope.page = page;
-        $scope.reloadItems();
-      };
-      $scope.reloadItems();
     }
   ]);
 
@@ -252,6 +250,44 @@
       $scope.cancelEdit = function() {
         $state.go("display-list");
       };
+    }
+  ]);
+
+  app.controller("paginationController", [
+    "$scope", "studyResource", function($scope, $studyResource) {
+      $scope.pagesArray = [];
+      $scope.recordsCache = [];
+      $scope.recordsPerPage = 0;
+      $scope.firstPage = 0;
+      $scope.lastPage = 0;
+      $studyResource.getElements(function(data) {
+        $scope.setUpControllerData(data.objects);
+      });
+      $scope.setUpControllerData = function(allRecords) {
+        $scope.recordsCache = allRecords;
+        $scope.recordsPerPage = 10;
+        $scope.firstPage = 0;
+        $scope.lastPage = $scope.recordsCache.length;
+        $scope.pagesArray = new Array(Math.ceil($scope.recordsCache.length / $scope.recordsPerPage));
+        $scope.$emit('pagesCount', $scope.pagesArray);
+        $scope.$emit('getRecords', 0);
+      };
+      $scope.$on('setRecordsPerPage', function(event, itemsPerPage) {
+        $scope.recordsPerPage = itemsPerPage;
+        $scope.pagesArray = new Array(Math.ceil($scope.recordsCache.length / $scope.recordsPerPage));
+        $scope.$emit('pagesCount', $scope.pagesArray);
+        $scope.$emit('getRecords', 0);
+      });
+      $scope.$on('getRecords', function(event, pageNumber) {
+        var lowerLimit, recordsArray, upperLimit;
+        lowerLimit = pageNumber * $scope.itemsPerPage;
+        upperLimit = (pageNumber + 1) * $scope.itemsPerPage;
+        if (upperLimit > $scope.recordsCache.length) {
+          upperLimit = $scope.recordsCache.length;
+        }
+        recordsArray = $scope.recordsCache.slice(lowerLimit, upperLimit);
+        $scope.$emit('pageChanged', recordsArray);
+      });
     }
   ]);
 

@@ -8,7 +8,7 @@
 				<div class="form-group">
 					<div class="input-group">
 						<span class="input-group-addon"> Items per page :  </span>
-					    <select class="form-control" ng-model="itemsPerPage" ng-change="limitItems()">
+					    <select class="form-control" ng-model="itemsPerPage" ng-change="setItemsPerPage()">
 							<option value="10">10</option>
 							<option value="15">15</option>
 							<option value="20">20</option>
@@ -58,12 +58,12 @@
 			</table>
 		</div>
 		<div class="row">
-			<ul class="pagination">
+			<ul class="pagination" ng-controller="paginationController">
 				<li><a ng-click="goToPage(0)">&laquo;</a></li>
-					<li ng-repeat="page in totalPages track by $index">
+					<li ng-repeat="page in pagesArray track by $index" ng-class="{ 'active': $index == currentPage }">
 						<a ng-click="goToPage($index)">{{ $index + 1 }}</a>
 					</li>
-				<li><a ng-click="goToPage(last - 1)">&raquo;</a></li>
+				<li><a ng-click="goToPage(totalPages - 1)">&raquo;</a></li>
 			</ul>
 		</div>
 	</div>
